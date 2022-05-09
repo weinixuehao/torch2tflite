@@ -62,15 +62,17 @@ class Torch2TFLiteConverter:
         try:
             if self.torch_model_path.endswith('.pth') or self.torch_model_path.endswith('.pt'):
                 model = torch.load(self.torch_model_path, map_location='cpu')
+                print(f"torch_model_path={self.torch_model_path}")
                 model = model.eval()
                 logging.info('PyTorch model successfully loaded and mapped to CPU')
                 return model
             else:
                 logging.error('Specified file path not compatible with torch2tflite, exiting!')
                 sys.exit(-1)
-        except Exception:
-            logging.error('Can not load PyTorch model. Please make sure'
-                          'that model saved like `torch.save(model, PATH)`')
+        except Exception as e:
+            print(e)
+            # logging.error('Can not load PyTorch model. Please make sure'
+            #               'that model saved like `torch.save(model, PATH)`')
             sys.exit(-1)
 
     def load_tflite(self):
